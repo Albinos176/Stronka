@@ -1,3 +1,4 @@
+            
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -28,9 +29,17 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow-y: auto;
         }
         #container:hover {
             transform: scale(1.05);
+        }
+        #quiz-view {
+            height: 90vh; /* Dodano ten wiersz */
+        }
+        #result-view {
+            height: auto; /* Dodano ten wiersz */
+            padding: 20px; /* Dodano ten wiersz */
         }
         h1 {
             font-size: 2.5em;
@@ -53,26 +62,34 @@
         button:hover {
             background-color: #ff4b3a;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div id="container">
-        <h1 id="main-heading">Witaj ptysiorku na mojej stronie :)</h1>
-        <p id="main-text">Kliknij w przycisk poniżej aby przejść dalej</p>
-        <button id="next-button" onclick="changeView()">Dalej</button>
+        <div id="welcome-view">
+            <h1 id="main-heading">Witaj ptysiorku na mojej stronie :)</h1>
+            <p id="main-text">Kliknij w przycisk poniżej aby przejść dalej</p>
+            <button id="next-button" onclick="changeView()">Dalej</button>
+        </div>
+        <div id="quiz-intro-view" class="hidden">
+            <h1>Miło mi, że mogę cię tutaj gościć, zapraszam do wypełnienia świątecznego quizu!</h1>
+            <button onclick="startQuiz()">Dalej</button>
+        </div>
+        <div id="quiz-view" class="hidden"></div>
+        <div id="result-view" class="hidden"></div>
     </div>
 
     <script>
     function changeView() {
-        const container = document.getElementById('container');
-        container.innerHTML = `
-            <h1>Miło mi, że mogę cię tutaj gościć, zapraszam do wypełnienia świątecznego quizu!</h1>
-            <button onclick="startQuiz()">Dalej</button>
-        `;
+        document.getElementById('welcome-view').classList.add('hidden');
+        document.getElementById('quiz-intro-view').classList.remove('hidden');
     }
 
     function startQuiz() {
-        const container = document.getElementById('container');
+        const container = document.getElementById('quiz-view');
         container.innerHTML = `
             <h1>Świąteczny Quiz</h1>
             <form id="quizForm" style="max-width: 600px; margin: 0 auto; font-size: 18px;">
@@ -140,14 +157,16 @@
                 <button type="submit" style="padding: 10px 20px; font-size: 16px;">Zakończ quiz</button>
             </form>
         `;
-        
+
+        document.getElementById('quiz-intro-view').classList.add('hidden');
+        document.getElementById('quiz-view').classList.remove('hidden');
+
         // Zdarzenie dla formularza
         document.getElementById('quizForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const answers = new FormData(event.target);
             let score = 0;
-
-            // Sprawdzanie odpowiedzi
+ 	    // Sprawdzanie odpowiedzi
             if (answers.get('q1') === 'a') score++;
             if (answers.get('q2') === 'a') score++;
             if (answers.get('q3') === 'a') score++;
@@ -159,12 +178,42 @@
             if (answers.get('q9') === 'a') score++;
             if (answers.get('q10') === 'a') score++;
 
-            container.innerHTML = `
+            let resultHTML = `
                 <h1>Twój wynik: ${score} na 10</h1>
-                <p>Dziękujemy za udział w quizie! Wesołych Świąt!</p>
             `;
+
+            if (score === 10) {
+                resultHTML += `
+                    <div class="reward">
+                        <h2>Gratulacje! Odpowiedziałaś poprawnie na wszystkie pytania!</h2>
+                        <button onclick="downloadCertificate()">Odbierz swoją nagrodę</button>
+                    </div>
+                `;
+            } else {
+                resultHTML += `
+                    <p>Dziękujemy za udział w quizie! Wesołych Świąt!</p>
+                    <button onclick="restartQuiz()">Zagraj ponownie</button>
+                `;
+            }
+
+            document.getElementById('result-view').innerHTML = resultHTML;
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
         });
     }
-</script>
+
+    function restartQuiz() {
+        document.getElementById('result-view').classList.add('hidden');
+        startQuiz(); // Restartuje quiz bez przechodzenia przez całą sekwencję od nowa
+    }
+
+    function downloadCertificate() {
+        // Funkcja do pobierania certyfikatu
+        const link = document.createElement('a');
+        link.href = 'https://github.com/Albinos176/Stronka/blob/main/nagroda.pdf';
+        link.download = 'nagroda.pdf';
+        link.click();
+    }
+    </script>
 </body>
 </html>
