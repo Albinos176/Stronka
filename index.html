@@ -63,12 +63,108 @@
     </div>
 
     <script>
-        function changeView() {
-            const container = document.getElementById('container');
+    function changeView() {
+        const container = document.getElementById('container');
+        container.innerHTML = `
+            <h1>Miło mi, że mogę cię tutaj gościć, zapraszam do wypełnienia świątecznego quizu!</h1>
+            <button onclick="startQuiz()">Dalej</button>
+        `;
+    }
+
+    function startQuiz() {
+        const container = document.getElementById('container');
+        container.innerHTML = `
+            <h1>Świąteczny Quiz</h1>
+            <form id="quizForm" style="max-width: 600px; margin: 0 auto; font-size: 18px;">
+                <div>
+                    <p>1. Kiedy obchodzimy Wigilię Bożego Narodzenia?</p>
+                    <input type="radio" name="q1" value="a"> 24 grudnia<br>
+                    <input type="radio" name="q1" value="b"> 25 grudnia<br>
+                    <input type="radio" name="q1" value="c"> 31 grudnia<br>
+                </div>
+                <div>
+                    <p>2. Jakie zwierzęta zwykle są symbolem Bożego Narodzenia?</p>
+                    <input type="radio" name="q2" value="a"> Renifery<br>
+                    <input type="radio" name="q2" value="b"> Lwy<br>
+                    <input type="radio" name="q2" value="c"> Słonie<br>
+                </div>
+                <div>
+                    <p>3. Co tradycyjnie w Polsce jemy na Wigilię?</p>
+                    <input type="radio" name="q3" value="a"> Barszcz z uszkami<br>
+                    <input type="radio" name="q3" value="b"> Hamburger<br>
+                    <input type="radio" name="q3" value="c"> Pizza<br>
+                </div>
+                <div>
+                    <p>4. Jakie jest imię renifera, który prowadzi sanie Świętego Mikołaja?</p>
+                    <input type="radio" name="q4" value="a"> Rudolf<br>
+                    <input type="radio" name="q4" value="b"> Max<br>
+                    <input type="radio" name="q4" value="c"> Benek<br>
+                </div>
+                <div>
+                    <p>5. Co symbolizuje gwiazda na czubku choinki?</p>
+                    <input type="radio" name="q5" value="a"> Gwiazdę betlejemską<br>
+                    <input type="radio" name="q5" value="b"> Złoty skarb<br>
+                    <input type="radio" name="q5" value="c"> Pierwszy śnieg<br>
+                </div>
+                <div>
+                    <p>6. Co tradycyjnie zostawiamy na stole w Wigilię dla nieznajomego?</p>
+                    <input type="radio" name="q6" value="a"> Puste miejsce<br>
+                    <input type="radio" name="q6" value="b"> Czekoladki<br>
+                    <input type="radio" name="q6" value="c"> Kwiaty<br>
+                </div>
+                <div>
+                    <p>7. Jakie słodycze kojarzymy z okresem świątecznym?</p>
+                    <input type="radio" name="q7" value="a"> Pierniki<br>
+                    <input type="radio" name="q7" value="b"> Lody<br>
+                    <input type="radio" name="q7" value="c"> Czekoladowe jajka<br>
+                </div>
+                <div>
+                    <p>8. Jakie drzewo jest najbardziej popularne do ubierania w Polsce?</p>
+                    <input type="radio" name="q8" value="a"> Świerk<br>
+                    <input type="radio" name="q8" value="b"> Dąb<br>
+                    <input type="radio" name="q8" value="c"> Sosna<br>
+                </div>
+                <div>
+                    <p>9. Kto w Polsce przynosi prezenty w nocy z 24 na 25 grudnia?</p>
+                    <input type="radio" name="q9" value="a"> Święty Mikołaj<br>
+                    <input type="radio" name="q9" value="b"> Aniołek<br>
+                    <input type="radio" name="q9" value="c"> Gwiazdka<br>
+                </div>
+                <div>
+                    <p>10. Co tradycyjnie robimy o północy w Wigilię?</p>
+                    <input type="radio" name="q10" value="a"> Kolędujemy<br>
+                    <input type="radio" name="q10" value="b"> Zjadamy kolację<br>
+                    <input type="radio" name="q10" value="c"> Otwieramy prezenty<br>
+                </div>
+                <br>
+                <button type="submit" style="padding: 10px 20px; font-size: 16px;">Zakończ quiz</button>
+            </form>
+        `;
+        
+        // Zdarzenie dla formularza
+        document.getElementById('quizForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const answers = new FormData(event.target);
+            let score = 0;
+
+            // Sprawdzanie odpowiedzi
+            if (answers.get('q1') === 'a') score++;
+            if (answers.get('q2') === 'a') score++;
+            if (answers.get('q3') === 'a') score++;
+            if (answers.get('q4') === 'a') score++;
+            if (answers.get('q5') === 'a') score++;
+            if (answers.get('q6') === 'a') score++;
+            if (answers.get('q7') === 'a') score++;
+            if (answers.get('q8') === 'a') score++;
+            if (answers.get('q9') === 'a') score++;
+            if (answers.get('q10') === 'a') score++;
+
             container.innerHTML = `
-                <h1>Jak miło że zajrzałaś na moją stronę</h1>
+                <h1>Twój wynik: ${score} na 10</h1>
+                <p>Dziękujemy za udział w quizie! Wesołych Świąt!</p>
             `;
-        }
-    </script>
+        });
+    }
+</script>
 </body>
 </html>
